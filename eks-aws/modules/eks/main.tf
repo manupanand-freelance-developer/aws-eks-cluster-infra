@@ -17,6 +17,10 @@ resource "aws_eks_cluster" "main" {
 
                                 ]
   }
+    access_config {
+    authentication_mode                         = "API_AND_CONFIG_MAP"
+    bootstrap_cluster_creator_admin_permissions = true
+  } 
 
   # Ensure that IAM Role permissions are created before and deleted
   # after EKS Cluster handling. Otherwise, EKS will not be able to
@@ -25,9 +29,6 @@ resource "aws_eks_cluster" "main" {
     aws_iam_role_policy_attachment.cluster_AmazonEKSClusterPolicy,
     aws_iam_role_policy_attachment.cluster_AmazonEKSVPCResourceController
   ]
-  tags = {
-    Name="${var.env}-eks-cluster"
-  }
 }
 
 resource "aws_eks_node_group" "main" {
@@ -46,7 +47,7 @@ resource "aws_eks_node_group" "main" {
     min_size     = each.value["min_size"]
   }
 
-  tags={ Name = "${var.env}-eks-ng-${each.key}"}
+  
 
   # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
   # Otherwise, EKS will not be able to properly delete EC2 Instances and Elastic Network Interfaces.
@@ -58,9 +59,19 @@ resource "aws_eks_node_group" "main" {
 }
 
 resource "aws_eks_addon" "eks_addons" {
-    depends_on     = [ aws_eks_cluster.main,aws_eks_node_group.main ]
-    for_each       = var.add_ons 
-    cluster_name   = aws_eks_cluster.main.name
-    addon_name     = each.key
-    addon_version  = each.value 
+    depends_on                  = [ aws_eks_cluster.main,aws_eks_node_group.main ]
+    for_each                    = var.add_ons 
+    cluster_name                = aws_eks_cluster.main.name
+    addon_name                  = each.key
+    addon_version               = each.value 
+    resolve_conflicts_on_create = "OVERWRITE"
+}
+
+module "eks-iam-access" {
+    source            =   "./eks-iam-access"
+    for_each          =   var.eks-iam-access
+    cluster_name      =   aws_eks_cluster.main.name
+    bastion_role_arn  =   each.value["bastion_role_arn"]
+    bastion_policy    =   each.value["bastion_policy"]
+    kubernetes_groups =   each.value["kubernetes_groups"]
 }

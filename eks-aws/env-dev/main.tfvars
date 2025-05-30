@@ -36,5 +36,17 @@ eks={
         #amazon-cloudwatch-observability="v4.0.1-eksbuild.1"
         
     }
+    eks-iam-access ={
+        workstation={
+            kubernetes_groups = []
+            bastion_role_arn ="arn:aws:iam::058264470882:role/workstation-devops"
+            bastion_policy ="arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+        }
+        #   sso_users={
+        #     kubernetes_groups = []
+        #     bastion_role_arn ="ssogrouparn"
+        #     bastion_policy ="arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+        # }
+    }
+
 }
- 
