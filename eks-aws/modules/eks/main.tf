@@ -25,6 +25,9 @@ resource "aws_eks_cluster" "main" {
     aws_iam_role_policy_attachment.cluster_AmazonEKSClusterPolicy,
     aws_iam_role_policy_attachment.cluster_AmazonEKSVPCResourceController
   ]
+  tags = {
+    Name="${var.env}-eks-cluster"
+  }
 }
 
 resource "aws_eks_node_group" "main" {
@@ -43,7 +46,7 @@ resource "aws_eks_node_group" "main" {
     min_size     = each.value["min_size"]
   }
 
-  
+  tags={ Name = "${var.env}-eks-ng-${each.key}"}
 
   # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
   # Otherwise, EKS will not be able to properly delete EC2 Instances and Elastic Network Interfaces.
