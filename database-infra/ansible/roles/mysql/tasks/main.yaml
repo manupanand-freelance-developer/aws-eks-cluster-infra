@@ -51,6 +51,13 @@
   args:
     executable: /bin/bash 
 
+
+- name: Enable- start Mysql
+  ansible.builtin.systemd_service:
+    name: mysqld
+    state: restarted
+    enabled: true
+
 # for future use
 # - name: Store MySQL root credentials for future use
 #   copy:
