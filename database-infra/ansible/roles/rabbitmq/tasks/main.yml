@@ -1,5 +1,18 @@
+- name: Setting prompt name
+  ansible.builtin.lineinfile:
+     path: "/home/ec2-user/.bashrc"
+     line: 'export PS1="\[\e[1;31m\]\u\[\e[0m\]@\[\e[1;34m\]{{ role_name }}\[\e[0m\] \w \$ "'
+     create: true
+     mode: '0644'
+
+- name: Source the updated .bashrc
+  ansible.builtin.shell: |
+    source ~/.bashrc
+  args:
+    executable: /bin/bash 
+
 - name: Copy repo file 
-  ansible.builtin.copy:
+  ansible.builtin.template:
     src: rabbitmq.repo
     dest: /etc/yum.repos.d/rabbitmq.repo
 
