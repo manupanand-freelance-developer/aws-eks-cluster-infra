@@ -11,7 +11,7 @@ resource "aws_route53_zone" "private_db_dns" {
   name = "db.manupanand.online"
 
   vpc {
-    vpc_id = module.security_group[each.key].vpc_id
+    vpc_id = module.security_group.vpc_id
   }
 }
 #create iam role
