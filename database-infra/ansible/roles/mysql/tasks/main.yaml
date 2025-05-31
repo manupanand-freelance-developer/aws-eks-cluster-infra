@@ -15,7 +15,7 @@
 
 - name: Copy mysql repo
   ansible.builtin.copy:
-    src: mongo.repo
+    src: mysql-community.repo
     dest: /etc/yum.repos.d/mysql-community.repo
 
 
