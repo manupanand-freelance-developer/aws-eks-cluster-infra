@@ -30,10 +30,17 @@
     state: restarted
     enabled: true
 
-# this will later on aws a service
-- name: Setting mysql root password
+- name: Extract MySQL temporary root password
+  ansible.builtin.shell: "grep 'temporary password' /var/log/mysqld.log | awk '{print $NF}'"
+  register: mysql_temp_pass
+
+- name: Set MySQL root password
   ansible.builtin.shell: |
-   mysql_secure_installation --set-root-pass RoboShop@1
+    mysql --connect-expired-password -uroot -p'{{ mysql_temp_pass.stdout }}' \
+      -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'RoboShop@1';"
+  args:
+    executable: /bin/bash
+
 
 - name: Enabling ports with firewalld
   ansible.builtin.shell: | 
@@ -42,4 +49,16 @@
      firewall-cmd --zone=public --add-port=80/tcp --permanent  && firewall-cmd --reload
      firewall-cmd --zone=public --add-port=443/tcp --permanent  && firewall-cmd --reload
   args:
-    executable: /bin/bash
+    executable: /bin/bash 
+
+# for future use
+# - name: Store MySQL root credentials for future use
+#   copy:
+#     dest: /tmp/.my.cnf
+#     content: |
+#       [client]
+#       user=root
+#       password=RoboShop@1
+#     owner: root
+#     group: root
+#     mode: '0600'
