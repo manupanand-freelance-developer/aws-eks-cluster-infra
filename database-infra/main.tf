@@ -7,13 +7,7 @@ module "security_group" {
   name            = each.key
   ingress_ports   = each.value["server_port"] 
 }
-resource "aws_route53_zone" "private_db_dns" {
-  name = "db.manupanand.online"
 
-  vpc {
-    vpc_id = tostring(module.security_group.vpc_id)
-  }
-}
 #create iam role
 module "iam_role" {
   source          = "./modules/iam-rule"
