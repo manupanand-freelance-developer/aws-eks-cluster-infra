@@ -7,9 +7,10 @@
 
 - name: Source the updated .bashrc
   ansible.builtin.shell: |
-    source ~/.bashrc
+    source  /home/ec2-user/.bashrc
   args:
     executable: /bin/bash 
+
 
 - name: Copy repo file 
   ansible.builtin.template:
