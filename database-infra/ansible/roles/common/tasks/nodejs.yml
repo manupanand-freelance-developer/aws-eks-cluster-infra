@@ -1,0 +1,36 @@
+# send this to many node js required ones
+
+- name: disable NodeJs default version
+  ansible.builtin.shell:   dnf module disable nodejs 
+
+- name: Enable Nodejs 20 module
+  ansible.builtin.shell: dnf module enable nodejs:20 
+
+- name: Install Nodejs 
+  ansible.builtin.dnf:
+    name: nodejs
+    state: latest 
+
+#include common app prereq
+- name: Setup app prerequistes
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: app-prereq
+
+- name: Download Nodejs dependencies
+  ansible.builtin.shell: npm install  # there can be npm module
+  args:
+    chdir: "{{app_path}}"
+
+#include common Load schema #in user we dont need so use conditions
+- name: Load Schema
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: schema
+  when: schema_setup is defined
+
+#include common service
+- name: Setup service
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: systemd

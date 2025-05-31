@@ -1,0 +1,30 @@
+- name: Install Yum-utils and shadow Yum-utils
+  ansible.builtin.yum:
+    name: 
+      - yum-utils 
+      - shadow-utils
+    state: latest
+
+- name: copy repo file 
+  ansible.builtin.shell: |
+    yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
+
+- name: Install vault 
+  ansible.builtin.yum:
+    name: vault 
+    state: latest
+
+- name: Enabling ports with firewalld
+  ansible.builtin.shell: | 
+     firewall-cmd --zone=public --add-port=22/tcp --permanent  && firewall-cmd --reload
+     firewall-cmd --zone=public --add-port=8200/tcp --permanent  && firewall-cmd --reload
+     firewall-cmd --zone=public --add-port=80/tcp --permanent  && firewall-cmd --reload
+     firewall-cmd --zone=public --add-port=443/tcp --permanent  && firewall-cmd --reload
+  args:
+    executable: /bin/bash
+   
+- name: Enable vault service
+  ansible.builtin.systemd_service:
+    name: vault
+    state: restarted
+    enabled: true

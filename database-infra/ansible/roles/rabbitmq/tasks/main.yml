@@ -1,0 +1,30 @@
+- name: Copy repo file 
+  ansible.builtin.copy:
+    src: rabbitmq.repo
+    dest: /etc/yum.repos.d/rabbitmq.repo
+
+- name: Install rabbitmq server
+  ansible.builtin.dnf:
+    name: rabbitmq-server
+    state: latest
+
+- name: Start Rabbit mq service
+  ansible.builtin.systemd_service:
+    name: rabbitmq-server
+    state: restarted
+    enabled: yes 
+
+- name: Create application user
+  ansible.builtin.shell: |
+      rabbitmqctl add_user roboshop roboshop123;rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
+
+
+- name: Enabling ports with firewalld
+  ansible.builtin.shell: | 
+     firewall-cmd --zone=public --add-port=22/tcp --permanent  && firewall-cmd --reload
+     firewall-cmd --zone=public --add-port=5672/tcp --permanent  && firewall-cmd --reload
+     firewall-cmd --zone=public --add-port=80/tcp --permanent  && firewall-cmd --reload
+     firewall-cmd --zone=public --add-port=443/tcp --permanent  && firewall-cmd --reload
+     firewall-cmd --zone=public --add-port=15672/tcp --permanent  && firewall-cmd --reload
+  args:
+    executable: /bin/bash

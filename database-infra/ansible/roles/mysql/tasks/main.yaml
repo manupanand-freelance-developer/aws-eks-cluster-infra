@@ -1,0 +1,31 @@
+#source common.sh
+- name: Copy mysql repo
+  ansible.builtin.copy:
+    src: mongo.repo
+    dest: /etc/yum.repos.d/mysql-community.repo
+
+
+- name: Installing mysql
+  ansibe.builtin.dnf:
+    name:  mysql-community-server
+    state: latest
+
+- name: Enable- start Mysql
+  ansibe.builtin.systemd_service:
+    name: mysqld
+    state: restarted
+    enabled: true
+
+# this will later on aws a service
+- name: Setting mysql root password
+  ansibe.builtin.shell: |
+   mysql_secure_installation --set-root-pass RoboShop@1
+
+- name: Enabling ports with firewalld
+  ansible.builtin.shell: | 
+     firewall-cmd --zone=public --add-port=22/tcp --permanent  && firewall-cmd --reload
+     firewall-cmd --zone=public --add-port=3306/tcp --permanent  && firewall-cmd --reload
+     firewall-cmd --zone=public --add-port=80/tcp --permanent  && firewall-cmd --reload
+     firewall-cmd --zone=public --add-port=443/tcp --permanent  && firewall-cmd --reload
+  args:
+    executable: /bin/bash
