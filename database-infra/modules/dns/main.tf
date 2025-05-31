@@ -3,7 +3,7 @@ resource "aws_route53_zone" "private_db_dns" {
   name = "db.manupanand.online"
 
   vpc {
-    vpc_id = aws_vpc.example.id
+    vpc_id = var.vpc_id
   }
 }
 

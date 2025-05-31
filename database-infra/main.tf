@@ -35,7 +35,7 @@ module "ec2-instance" {
 # route 53
 module "dns" {
 
-  depends_on            = [ module.ec2-instance ]
+  depends_on            = [ module.ec2-instance ,module.security_group]
   source                = "./modules/dns"
   for_each              = var.ec2_instance 
   name                  = each.key
