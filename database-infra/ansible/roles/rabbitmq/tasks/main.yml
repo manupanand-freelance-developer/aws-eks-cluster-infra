@@ -11,11 +11,11 @@
   args:
     executable: /bin/bash 
 
-
 - name: Copy repo file 
   ansible.builtin.copy:
     src: rabbitmq.repo
     dest: /etc/yum.repos.d/rabbitmq.repo
+    mode: '0644'
 
 - name: Install rabbitmq server
   ansible.builtin.dnf:
