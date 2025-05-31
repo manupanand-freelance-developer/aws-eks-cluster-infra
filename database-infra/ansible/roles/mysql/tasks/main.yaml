@@ -30,16 +30,23 @@
     state: restarted
     enabled: true
 
-- name: Extract MySQL temporary root password
-  ansible.builtin.shell: "grep 'temporary password' /var/log/mysqld.log | awk '{print $NF}'"
-  register: mysql_temp_pass
+- name: Create MySQL credentials file
+  ansible.builtin.copy:
+    dest: /home/ec2-user/.my.cnf
+    content: |
+      [client]
+      user=root
+      password=RoboShop@1
+    mode: '0600'
+    owner: ec2-user
+    group: ec2-user
 
-- name: Set MySQL root password
+- name: Run MySQL command using .my.cnf for authentication
   ansible.builtin.shell: |
-    mysql --connect-expired-password -uroot -p'{{ mysql_temp_pass.stdout }}' \
-      -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'RoboShop@1';"
+    mysql --connect-expired-password -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'RoboShop@1';"
   args:
     executable: /bin/bash
+
 
 
 - name: Enabling ports with firewalld
