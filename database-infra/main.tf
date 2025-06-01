@@ -7,7 +7,10 @@ module "security_group" {
   name            = each.key
   ingress_ports   = each.value["server_port"] 
 }
-
+module "dns_zone" {
+  source          = "./modules/dns-zone"
+  vpc_name        = var.vpc_name
+}
 #create iam role
 module "iam_role" {
   source          = "./modules/iam-rule"
@@ -36,12 +39,12 @@ module "ec2-instance" {
 # route 53
 module "dns" {
 
-  depends_on            = [ module.ec2-instance ,module.security_group,aws_route53_zone.private_db_dns]
+  depends_on            = [ module.ec2-instance ,module.security_group,module.dns_zone]
   source                = "./modules/dns"
   for_each              = var.ec2_instance 
   name                  = each.key
   private_ip            = module.ec2-instance[each.key].instance_ip_map
-  zone_id               = aws_route53_zone.private_db_dns.zone_id
+  zone_id               = module.dns_zone.zone_id
   
   
 }
