@@ -89,6 +89,85 @@ terraform destroy -var-file=env-dev/main.tfvars
 ```
 
 ---
+## 📁 Project Structure
+
+```
+
+database-infra
+|── ansible/
+│   ├── roles
+|   |    |-mongo  
+|   |    |-common
+|   |    |-mysql  
+|   |    |-rabbitmq
+|   |    |-redis
+|   |    |-vault
+|   |    |-grafana        
+│   └── playbook.yml 
+├── env-dev/
+│   ├── main.tfvars        # Environment-specific input variables
+│   └── state.tfvars       # Backend config for storing state remotely (e.g., in S3)
+├── modules/
+│   ├──dns/
+|   |    ├── main.tf       
+│   |    └── variables.tf
+│   ├──iam-rule/
+|   |    ├── main.tf 
+|   |    ├── output.tf       
+│   |    └── variables.tf           
+│   └── security-group/
+|   |    ├── data.tf 
+|   |    ├── main.tf 
+|   |    ├── output.tf       
+│   |    └── variables.tf
+│   └── ec2-instance/
+|        ├── data.tf 
+|        ├── main.tf 
+|        ├── output.tf       
+│        └── variables.tf  
+├         
+├── main.tf
+├── variables.tf
+├── outputs.tf
+└── README.md
+
+eks-aws
+|
+├── env-dev/
+│   ├── main.tfvars        # Environment-specific input variables
+│   └── state.tfvars       # Backend config for storing state remotely (e.g., in S3)
+├── modules/
+│   ├──eks-iam-access
+|   |
+|   ├── data.tf 
+|   ├── main.tf 
+|   ├── output.tf       
+│   └── variables.tf  
+├         
+├── main.tf
+├── variables.tf
+├── outputs.tf
+└── README.md
+
+vpc-eks-aws-infra
+|
+├── env-dev/
+│   ├── main.tfvars        # Environment-specific input variables
+│   └── state.tfvars       # Backend config for storing state remotely (e.g., in S3)
+├── modules/
+│   ├──vpc/
+|       ├── igw.tf 
+|       ├── ngw.tf   
+|       ├── route-tables.tf
+|       ├── subnet.tf
+|       ├── vpc.tf    
+│       └── variables.tf            
+├         
+├── main.tf
+├── variables.tf
+├── outputs.tf
+└── README.md
+```
 
 
 
@@ -101,4 +180,9 @@ terraform destroy -var-file=env-dev/main.tfvars
 
 
 Feel free to open issues or raise discussions for improvements or bugs.
+
+
+## 📄 License
+
+MIT license.
 
