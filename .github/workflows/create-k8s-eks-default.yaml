@@ -21,7 +21,7 @@ jobs:
       - name: run terraform 
       # export TF_VAR_vault_token=${{secrets.VAULT_TOKEN}}
         run: |
-          cd eks-aws;
+          cd eks-aws-default;
           terraform init -backend-config=env-dev/state.tfvars ; terraform plan -var-file=env-dev/main.tfvars;terraform apply -var-file=env-dev/main.tfvars -auto-approve
         env:
             TF_VAR_aws_user: ${{env.AWS_USER}}
