@@ -19,7 +19,7 @@ jobs:
       - name: Destroying the Infrastructure
         run: |
          
-          cd eks-aws; terraform destroy -var-file=env-dev/main.tfvars -auto-approve
+          cd eks-aws; terraform init -backend-config=env-dev/state.tfvars;terraform destroy -var-file=env-dev/main.tfvars -auto-approve
         env: 
           TF_VAR_aws_user: ${{secrets.AWS_USER}}
           TF_VAR_aws_password: ${{secrets.AWS_PASSWORD}}
