@@ -42,6 +42,17 @@ eks={
             bastion_role_arn ="arn:aws:iam::058264470882:role/workstation-devops"
             bastion_policy ="arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
         }
+        vault-server={
+            kubernetes_groups = []
+            bastion_role_arn ="arn:aws:iam::058264470882:role/vault-role"
+            bastion_policy ="arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+        }
+        grunner={
+            kubernetes_groups = []
+            bastion_role_arn ="arn:aws:iam::058264470882:role/grunner_arm-iam-role"
+            bastion_policy ="arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+        }
+        
         #   sso_users={
         #     kubernetes_groups = []
         #     bastion_role_arn ="ssogrouparn"
