@@ -1,0 +1,44 @@
+- name: Setting prompt name
+  ansible.builtin.lineinfile:
+     path: "/home/ec2-user/.bashrc"
+     line: 'export PS1="\[\e[1;31m\]\u\[\e[0m\]@\[\e[1;34m\]{{ role_name }}\[\e[0m\] \w \$ "'
+     create: true
+     mode: '0644'
+
+- name: Source the updated .bashrc
+  ansible.builtin.shell: |
+    source  /home/ec2-user/.bashrc
+  args:
+    executable: /bin/bash 
+
+
+- name: Copy Mongo repo
+  ansible.builtin.copy:
+    src: mongo.repo
+    dest: /etc/yum.repos.d/mongo.repo
+
+- name: Installing mongodb
+  ansible.builtin.dnf:
+    name: mongodb-org
+    state: latest
+
+- name: Updating config file
+  ansible.builtin.replace:
+     path: /etc/mongod.conf
+     regexp: '127.0.0.1'
+     replace: '0.0.0.0'
+  
+- name: Start Mongo service
+  ansible.builtin.systemd_service:
+    name: mongod
+    state: restarted
+    enabled: true
+ 
+- name: Enabling ports with firewalld
+  ansible.builtin.shell: | 
+     firewall-cmd --zone=public --add-port=22/tcp --permanent  && firewall-cmd --reload
+     firewall-cmd --zone=public --add-port=27017/tcp --permanent  && firewall-cmd --reload
+     firewall-cmd --zone=public --add-port=80/tcp --permanent  && firewall-cmd --reload
+     firewall-cmd --zone=public --add-port=443/tcp --permanent  && firewall-cmd --reload
+  args:
+    executable: /bin/bash

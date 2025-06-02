@@ -1,0 +1,13 @@
+
+- name: Installing firewalld
+  ansible.builtin.dnf: 
+    name: firewalld 
+    state: latest
+
+
+
+- name: Enable  firewalld
+  ansible.builtin.systemd_service: 
+   name:  firewalld
+   state: restarted
+   enabled: true

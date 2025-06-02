@@ -1,0 +1,31 @@
+- name: Load mongo schema
+  when: schema_setup == "mongo"
+  block:
+    # run only for mongo
+    - name: Copy mongo repo LOG_FILE
+      ansible.builtin.copy:
+        src: mongo.repo
+        dest: /etc/yum.repos.d/mongo.repo
+
+    - name: Install Mongo Client
+      ansible.builtin.dnf:
+        name: mongodb-mongosh
+        state: latest
+
+    - name: Load Master Data
+      ansible.builtin.shell: |
+        mongosh --host monog.{{env}}.project.online </app/db/{{item}}.js
+      loop: "{{schema_files}}"
+
+- name: Load mysql schema
+  when: schema_setup == "mysql"
+  block:
+    # run only for mysql
+    - name: Install Mysql client
+      ansible.builtin.dnf:
+        src: mysql
+        state: latest
+    - name: Load master Data
+      ansible.builtin.shell: |
+        mysql -h mysql.{{env}}.manup.online -uroot -pRoboshop@1 </app/db/{{item}}.sql
+      loop: "{{schema_files}}"

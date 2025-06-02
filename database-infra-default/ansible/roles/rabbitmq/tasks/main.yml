@@ -1,0 +1,44 @@
+- name: Setting prompt name
+  ansible.builtin.lineinfile:
+     path: "/home/ec2-user/.bashrc"
+     line: 'export PS1="\[\e[1;31m\]\u\[\e[0m\]@\[\e[1;34m\]{{ role_name }}\[\e[0m\] \w \$ "'
+     create: true
+     mode: '0644'
+
+- name: Source the updated .bashrc
+  ansible.builtin.shell: |
+    source  /home/ec2-user/.bashrc
+  args:
+    executable: /bin/bash 
+
+- name: Copy repo file 
+  ansible.builtin.copy:
+    src: rabbitmq.repo
+    dest: /etc/yum.repos.d/rabbitmq.repo
+    mode: '0644'
+
+- name: Install rabbitmq server
+  ansible.builtin.dnf:
+    name: rabbitmq-server
+    state: latest
+
+- name: Start Rabbit mq service
+  ansible.builtin.systemd_service:
+    name: rabbitmq-server
+    state: restarted
+    enabled: yes 
+
+- name: Create application user
+  ansible.builtin.shell: |
+      rabbitmqctl add_user roboshop roboshop123;rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
+
+
+- name: Enabling ports with firewalld
+  ansible.builtin.shell: | 
+     firewall-cmd --zone=public --add-port=22/tcp --permanent  && firewall-cmd --reload
+     firewall-cmd --zone=public --add-port=5672/tcp --permanent  && firewall-cmd --reload
+     firewall-cmd --zone=public --add-port=80/tcp --permanent  && firewall-cmd --reload
+     firewall-cmd --zone=public --add-port=443/tcp --permanent  && firewall-cmd --reload
+     firewall-cmd --zone=public --add-port=15672/tcp --permanent  && firewall-cmd --reload
+  args:
+    executable: /bin/bash
