@@ -112,6 +112,7 @@ ec2_instance={
                 }
             }
     }
+    # valkey -redis
 # vault={
 #         instance_type ="t3.medium"
 #         volume_size   =30
