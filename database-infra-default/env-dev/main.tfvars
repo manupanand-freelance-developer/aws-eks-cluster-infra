@@ -30,25 +30,25 @@ ec2_instance={
     #             }
     #         }
     # }
-    mongo={
-        instance_type ="t3.medium"
-        volume_size   =30
-        policy_name=["AmazonEC2FullAccess","AmazonSSMFullAccess","AmazonS3ReadOnlyAccess"]
-        server_port={
-                ssh={
-                    port="22"
-                }
-                 mongo={
-                    port="27017"
-                }
-                 http={
-                    port="80"
-                }
-                 https={
-                    port="443"
-                }
-            }
-    }
+    # mongo={
+    #     instance_type ="t3.medium"
+    #     volume_size   =30
+    #     policy_name=["AmazonEC2FullAccess","AmazonSSMFullAccess","AmazonS3ReadOnlyAccess"]
+    #     server_port={
+    #             ssh={
+    #                 port="22"
+    #             }
+    #              mongo={
+    #                 port="27017"
+    #             }
+    #              http={
+    #                 port="80"
+    #             }
+    #              https={
+    #                 port="443"
+    #             }
+    #         }
+    # }
     mysql={
         instance_type ="t3.medium"
         volume_size   =30
@@ -68,50 +68,50 @@ ec2_instance={
                 }
             }
     }
-    rabbitmq={
-        instance_type ="t3.medium"
-        volume_size   =30
-        policy_name=["AmazonEC2FullAccess","AmazonSSMFullAccess","AmazonS3ReadOnlyAccess"]
-        server_port={
-                ssh={
-                    port="22"
-                }
-                  rabbitmq={
-                    port="15672"
-                }
-                 http={
-                    port="80"
-                }
-                 https={
-                    port="443"
-                }
-                 client={
-                    port="5672"
-                }
-            }
-    }
-    redis={
-        instance_type ="t3.medium"
-        volume_size   =30
-        policy_name=["AmazonEC2FullAccess","AmazonSSMFullAccess","AmazonS3ReadOnlyAccess"]
-        server_port={
-                ssh={
-                    port="22"
-                }
-                  redis={
-                    port="16379"
-                }
-                 http={
-                    port="80"
-                }
-                 https={
-                    port="443"
-                }
-                 client={
-                    port="6379"
-                }
-            }
-    }
+    # rabbitmq={
+    #     instance_type ="t3.medium"
+    #     volume_size   =30
+    #     policy_name=["AmazonEC2FullAccess","AmazonSSMFullAccess","AmazonS3ReadOnlyAccess"]
+    #     server_port={
+    #             ssh={
+    #                 port="22"
+    #             }
+    #               rabbitmq={
+    #                 port="15672"
+    #             }
+    #              http={
+    #                 port="80"
+    #             }
+    #              https={
+    #                 port="443"
+    #             }
+    #              client={
+    #                 port="5672"
+    #             }
+    #         }
+    # }
+    # redis={
+    #     instance_type ="t3.medium"
+    #     volume_size   =30
+    #     policy_name=["AmazonEC2FullAccess","AmazonSSMFullAccess","AmazonS3ReadOnlyAccess"]
+    #     server_port={
+    #             ssh={
+    #                 port="22"
+    #             }
+    #               redis={
+    #                 port="16379"
+    #             }
+    #              http={
+    #                 port="80"
+    #             }
+    #              https={
+    #                 port="443"
+    #             }
+    #              client={
+    #                 port="6379"
+    #             }
+    #         }
+    # }
     # valkey -redis
 # vault={
 #         instance_type ="t3.medium"
