@@ -20,7 +20,12 @@ resource "helm_release" "external-secrets" {
   repository = "https://charts.external-secrets.io"
   chart      = "external-secrets" #chartname
   namespace  = "kube-system" #admin pods or on seperate ns
+  set {
+    name  = "installCRDs"
+    value = "true"
+  }
   wait       = true
+  
 
  
 }
