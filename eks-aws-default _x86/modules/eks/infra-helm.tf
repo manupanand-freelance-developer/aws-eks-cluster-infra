@@ -8,7 +8,7 @@ resource "null_resource" "kube-config"{
         kubectl create generic vault-token --from-literal=token=${var.vault_token} -n kube-system
 
       EOF
-    }
+    }#create secret on eks for storing vault-token
 }
 # install helm - helm provider terraform - in provoder .tf
 # helm repo add external-secrets https://charts.external-secrets.io
@@ -21,13 +21,32 @@ resource "helm_release" "external-secrets" {
   chart      = "external-secrets" #chartname
   namespace  = "kube-system" #admin pods or on seperate ns
   wait       = true
+
  
 }
-#create secret on eks for storing vault-token
+#create cluster secret store
 resource "null_resource" "external-secret-store" {
     depends_on = [ helm_release.external-secrets ]
     provisioner "local-exec" {
       command = <<EOF
+            kubectl apply -f - <<EOK
+                                apiVersion: external-secrets.io/v1beta1
+                                kind: ClusterSecretStore 
+                                metadata: 
+                                    name: vault-backend  
+                                spec: 
+                                    provider: 
+                                        vault: 
+                                            server: "http://vault-public.manupanand.online:8200"  
+                                            path: "roboshop-k8s"
+                                            version: "v2"  
+                                            auth: 
+                                                tokenSecretRef: 
+                                                    name: "vault-token"
+                                                    key: "token" 
+                                                    namespace: kube-system
+
+            EOK
       EOF
     }
   

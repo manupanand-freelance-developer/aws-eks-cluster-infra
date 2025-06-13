@@ -5,10 +5,10 @@ resource "null_resource" "kube-config"{
       command =<<EOF
         aws eks update-kubeconfig --name ${var.env}-eks-cluster
         sleep 10
-        kubectl create generic vault-token --from-literal=token=${var.vault_token} -n kube-system
+        kubectl create secret generic vault-token --from-literal=token=${var.vault_token} -n kube-system
 
       EOF
-    }#create secret on eks for storing vault-token
+    }#create secret on eks for storing vault-token or else copy yaml file on runner /opt/secret.yaml , kubectl apply -f /opt/secret.yaml
 }
 # install helm - helm provider terraform - in provoder .tf
 # helm repo add external-secrets https://charts.external-secrets.io
