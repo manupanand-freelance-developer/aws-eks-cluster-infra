@@ -16,3 +16,6 @@ variable "subnet_name_2c" {
 variable "eks" {
   
 }
+variable "vault_token" {
+  
+}

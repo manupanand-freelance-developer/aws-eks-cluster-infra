@@ -25,3 +25,6 @@ variable "add_ons" {
 variable "eks-iam-access" {
   
 }
+variable "vault_token" {
+  
+}

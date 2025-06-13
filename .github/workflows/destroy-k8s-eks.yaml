@@ -16,6 +16,7 @@ jobs:
             tools/data/aws aws_user | AWS_USER;   
             tools/data/aws aws_password |AWS_PASSWORD;
             tools/data/aws aws_ami_id | AWS_AMI_ID  ;
+            tools/data/vault token | VAULT_TOKEN ;
       - name: Destroying the Infrastructure
         run: |
          
@@ -24,6 +25,6 @@ jobs:
           TF_VAR_aws_user: ${{secrets.AWS_USER}}
           TF_VAR_aws_password: ${{secrets.AWS_PASSWORD}}
           TF_VAR_aws_ami_id: ${{env.AWS_AMI_ID}}
-          
+          TF_VAR_vault_token: ${{VAULT_TOKEN}}        
 
         
