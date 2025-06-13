@@ -33,7 +33,18 @@ resource "helm_release" "external-secrets" {
 resource "null_resource" "external-secret-store" {
     depends_on = [ helm_release.external-secrets ]
     provisioner "local-exec" {
-      command = "kubectl apply -f modules/eks/vault-secretstore.yaml"
-    }
+    command = <<EOT
+      # Wait for CRD to be registered
+      echo "Waiting for ClusterSecretStore CRD to be available..."
+      for i in {1..30}; do
+        kubectl get crd clustersecretstores.external-secrets.io && break
+        echo "CRD not ready yet. Retrying in 5s..."
+        sleep 5
+      done
+
+      # Now apply the manifest
+      kubectl apply -f modules/eks/vault-secretstore.yaml
+    EOT
+  }
   
 }
