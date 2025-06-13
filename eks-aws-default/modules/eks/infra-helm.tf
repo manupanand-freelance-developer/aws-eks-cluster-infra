@@ -28,26 +28,7 @@ resource "helm_release" "external-secrets" {
 resource "null_resource" "external-secret-store" {
     depends_on = [ helm_release.external-secrets ]
     provisioner "local-exec" {
-      command = <<EOF
-            kubectl apply -f - <<EOK
-                                apiVersion: external-secrets.io/v1beta1
-                                kind: ClusterSecretStore 
-                                metadata: 
-                                    name: vault-backend  
-                                spec: 
-                                    provider: 
-                                        vault: 
-                                            server: "http://vault-public.manupanand.online:8200"  
-                                            path: "roboshop-k8s"
-                                            version: "v2"  
-                                            auth: 
-                                                tokenSecretRef: 
-                                                    name: "vault-token"
-                                                    key: "token" 
-                                                    namespace: kube-system
-
-            EOK
-      EOF
+      command = "kubectl apply -f modules/eks/vault-secretstore.yaml"
     }
   
 }
