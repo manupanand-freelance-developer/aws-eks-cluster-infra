@@ -1,11 +1,14 @@
 # configure cluster using terraform
 resource "null_resource" "kube-config"{
     depends_on = [ aws_eks_node_group.main ]
+    # better to provide appliaction namespace
     provisioner "local-exec" {
       command =<<EOF
         aws eks update-kubeconfig --name ${var.env}-eks-cluster
+        sleep 5
+        kubectl create ns roboshop
         sleep 10
-        kubectl create secret generic vault-token --from-literal=token=${var.vault_token} -n kube-system
+        kubectl create secret generic vault-token --from-literal=token=${var.vault_token} -n roboshop
 
       EOF
     }#create secret on eks for storing vault-token or else copy yaml file on runner /opt/secret.yaml , kubectl apply -f /opt/secret.yaml
@@ -30,7 +33,7 @@ resource "helm_release" "external-secrets" {
  
 }
 #create cluster secret store
-resource "null_resource" "external-secret-store" {
+resource "null_resource" "external-cluster-secret-store" {
     depends_on = [ helm_release.external-secrets ]
     provisioner "local-exec" {
     command = <<EOT
