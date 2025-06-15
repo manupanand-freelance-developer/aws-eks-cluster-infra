@@ -51,3 +51,13 @@ resource "null_resource" "external-cluster-secret-store" {
   }
   
 }
+# installing metric server if not already installed
+# resource "null_resource" "metric-server" {
+#     depends_on = [ null_resource.kube-config]
+#     provisioner "local-exec" {
+#     command = <<EOT
+#       kubectl apply -f  https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+#     EOT
+#   }
+  
+# }

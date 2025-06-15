@@ -22,6 +22,13 @@
     name: rabbitmq-server
     state: latest
 
+
+- name: Copy conf file 
+  ansible.builtin.copy:
+    src: rabbitmq.conf
+    dest: /etc/rabbitmq/rabbitmq.conf
+    mode: '0644'
+
 - name: Start Rabbit mq service
   ansible.builtin.systemd_service:
     name: rabbitmq-server
@@ -30,7 +37,7 @@
 
 - name: Create application user
   ansible.builtin.shell: |
-      rabbitmqctl add_user roboshop roboshop123;rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
+      rabbitmqctl add_user roboshop roboshop123;rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*";rabbitmqctl set_user_tags roboshop  administrator;
 
 
 - name: Enabling ports with firewalld
@@ -42,3 +49,9 @@
      firewall-cmd --zone=public --add-port=15672/tcp --permanent  && firewall-cmd --reload
   args:
     executable: /bin/bash
+
+- name: Start Rabbit mq service
+  ansible.builtin.systemd_service:
+    name: rabbitmq-server
+    state: restarted
+    enabled: yes 

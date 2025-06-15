@@ -14,17 +14,17 @@ eks={
         main_spot={
             instance_types      =["t4g.medium"]#c7g.large
             max_size            = 3
-            min_size            = 1 
+            min_size            = 2
             capacity_type       = "SPOT"
             ami_type            ="AL2023_ARM_64_STANDARD"
         }
-        main_spot_2={
-            instance_types      =["t4g.medium"]#c7g.large
-            max_size            = 3
-            min_size            = 1 
-            capacity_type       = "SPOT"
-            ami_type            ="AL2023_ARM_64_STANDARD"
-        }
+        # main_spot_2={
+        #     instance_types      =["t4g.medium"]#c7g.large
+        #     max_size            = 3
+        #     min_size            = 1 
+        #     capacity_type       = "SPOT"
+        #     ami_type            ="AL2023_ARM_64_STANDARD"
+        # }
     }
     # aws eks describe-addon-versions command |grep addonName
     add_ons={
