@@ -32,5 +32,7 @@ resource "aws_instance" "main" {
   tags={
     Name="${var.env}-${var.name}-${each.key}-instance"
   }
-
+  # lifecycle {
+  #   ignore_changes = [ ami ] # ignore chnages in ami and not recrete instance on rerun
+  # }
 }

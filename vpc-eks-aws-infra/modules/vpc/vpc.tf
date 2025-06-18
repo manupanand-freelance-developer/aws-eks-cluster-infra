@@ -6,6 +6,7 @@ resource "aws_vpc" "private" {
 
     tags = {
       Name ="${var.env}-private-vpc"
+      "kubernetes.io/cluster/dev-eks-cluster"="owned"
     }
   
 }
