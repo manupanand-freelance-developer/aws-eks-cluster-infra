@@ -77,17 +77,15 @@ resource "helm_release" "prometheus_stack" {
   ]
   #seting host - list
   set_list =[{
-    name = "grafana.ingress.hosts"
-    value = ["grafana-${var.env}.manupanand.online"]
-  }]
-   set_list=[ {
-    name = "prometheus.ingress.hosts"
-    value = ["prometheus-${var.env}.manupanand.online"]
-  } ]
-  # add tls certificate also
+              name = "grafana.ingress.hosts"
+              value = ["grafana-${var.env}.manupanand.online"]
+            }, {
+              name = "prometheus.ingress.hosts"
+              value = ["prometheus-${var.env}.manupanand.online"]
+            } 
+            ]
+  # add tls certificate also->annotation
   # external dns for creating dns on run -> for aws route53
-
- 
 }
 
 # loadbalancer - by default -classic loadbalancer installing
@@ -135,14 +133,14 @@ resource "helm_release" "aws_loadbalancer_controller_ingress" {
   wait       = true
   
   set =[{
-    name     = "clusterName" 
-    value    = aws_eks_cluster.main.name
-  }]# need to give appropriate iam permission to pod for its SA
- 
- set=[ {
-   name = "vpcId" # in values.yaml vpcId to fetch
-   value= data.aws_vpc.private_vpc.id
- }]
+            name     = "clusterName" 
+            value    = aws_eks_cluster.main.name
+          },    # need to give appropriate iam permission to pod for its SA
+          {
+          name = "vpcId" # in values.yaml vpcId to fetch
+          value= data.aws_vpc.private_vpc.id
+        }    
+        ]
 # set the http redirect to https
  
 }
