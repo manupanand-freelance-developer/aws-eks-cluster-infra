@@ -86,9 +86,13 @@ resource "aws_iam_role" "external_dns_pod_role" {
         }
     ]
 })
-  inline_policy {
-    name = "route53-access"
-    policy = jsonencode({
+
+} 
+resource "aws_iam_role_policy" "external_dns_role_policy" {
+  name = "route53-access"
+  role = aws_iam_role.external_dns_pod_role.id
+
+  policy = jsonencode({
   "Version": "2012-10-17",
   "Statement": [
     {
@@ -113,8 +117,9 @@ resource "aws_iam_role" "external_dns_pod_role" {
     }
   ]
 })
-  }
-} # add a policy also to role-> added to particular pod -externaldns pods
+}
+
+# add a policy also to role-> added to particular pod -externaldns pods
 #associate role to pod> atatch to service account
 resource "aws_eks_pod_identity_association" "external_dns_pod_role_association" {
   cluster_name    = aws_eks_cluster.main.name
@@ -146,9 +151,13 @@ resource "aws_iam_role" "aws_ingress_controller_role" {
         }
     ]
 })
-  inline_policy {
-    name = "alb-access"
-    policy = jsonencode({
+
+}
+resource "aws_iam_role_policy" "aws_ingress_role_policy" {
+  name = "alb-access"
+  role = aws_iam_role.aws_ingress_controller_role.id
+
+  policy = jsonencode({
     "Version": "2012-10-17",
     "Statement": [
         {
@@ -398,10 +407,9 @@ resource "aws_iam_role" "aws_ingress_controller_role" {
             "Resource": "*"
         }
     ]
+})
 }
-)
-  }
-} # add a policy also to role-> added to particular pod -externaldns pods
+ # add a policy also to role-> added to particular pod -externaldns pods
 #associate role to pod> atatch to service account
 resource "aws_eks_pod_identity_association" "aws_ingress_controller_role_association" {
   cluster_name    = aws_eks_cluster.main.name
