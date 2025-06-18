@@ -6,6 +6,7 @@ grafana:
    enabled: true  # by default paths: /*
    ingressClassName: alb
    annotations:
+      external-dns.alpha.kubernetes.io/hostname: grafana-dev.manupanand.online
       alb.ingress.kubernetes.io/scheme: internet-facing 
       alb.ingress.kubernetes.io/target-type: ip
       alb.ingress.kubernetes.io/group.name: roboshop # to group similar load balancer
@@ -18,11 +19,12 @@ prometheus:
 #  service: 
 #    type: NodePort
  ingress: 
-   enabled: true
+   enabled: true  
    paths: 
      - /*  # by default it is / changed it to /*
    ingressClassName: alb 
    annotations:
+      external-dns.alpha.kubernetes.io/hostname: prometheus-dev.manupanand.online
       alb.ingress.kubernetes.io/scheme: internet-facing 
       alb.ingress.kubernetes.io/target-type: ip #instance nodeport may be needed
       alb.ingress.kubernetes.io/group.name: roboshop
