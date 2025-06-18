@@ -12,7 +12,7 @@ grafana:
       alb.ingress.kubernetes.io/healtcheck-path: /login
       alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-south-2:058264470882:certificate/b85beb43-66bd-4d7e-a23c-e075db3b4d9e
       alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
-      alb.ingress.kubernetes.io/ssl-redirect: 443
+      alb.ingress.kubernetes.io/ssl-redirect: "443"
       #alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}' 
 prometheus:
 #  service: 
@@ -29,6 +29,6 @@ prometheus:
       alb.ingress.kubernetes.io/healtcheck-path: /login
       alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-south-2:058264470882:certificate/b85beb43-66bd-4d7e-a23c-e075db3b4d9e
       alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
-      alb.ingress.kubernetes.io/ssl-redirect: 443
+      alb.ingress.kubernetes.io/ssl-redirect: "443"
       #alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}' 
 # apply using helm release>values
