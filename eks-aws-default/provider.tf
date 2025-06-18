@@ -3,7 +3,7 @@ provider "aws" {
 }
 #kube config location for helm
 provider "helm" {
-  kubernetes {
+  kubernetes = {
     config_path = "~/.kube/config"
   }
 }
