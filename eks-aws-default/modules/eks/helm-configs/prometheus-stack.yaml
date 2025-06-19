@@ -6,7 +6,7 @@ grafana:
    enabled: true  # by default paths: /*
    ingressClassName: alb
    annotations:
-      external-dns.alpha.kubernetes.io/hostname: grafana-dev.manupanand.online
+      #external-dns.alpha.kubernetes.io/hostname: grafana-dev.manupanand.online
       alb.ingress.kubernetes.io/scheme: internet-facing 
       alb.ingress.kubernetes.io/target-type: ip
       alb.ingress.kubernetes.io/group.name: roboshop # to group similar load balancer
@@ -24,11 +24,11 @@ prometheus:
      - /*  # by default it is / changed it to /*
    ingressClassName: alb 
    annotations:
-      external-dns.alpha.kubernetes.io/hostname: prometheus-dev.manupanand.online
+      #external-dns.alpha.kubernetes.io/hostname: prometheus-dev.manupanand.online
       alb.ingress.kubernetes.io/scheme: internet-facing 
       alb.ingress.kubernetes.io/target-type: ip #instance nodeport may be needed
       alb.ingress.kubernetes.io/group.name: roboshop
-      alb.ingress.kubernetes.io/healtcheck-path: "/login"
+      alb.ingress.kubernetes.io/healtcheck-path: "/graph"
       alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-south-2:058264470882:certificate/b85beb43-66bd-4d7e-a23c-e075db3b4d9e
       alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
       alb.ingress.kubernetes.io/ssl-redirect: "443"
