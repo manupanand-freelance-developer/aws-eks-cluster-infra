@@ -62,7 +62,7 @@ resource "null_resource" "external_cluster_secret_store" {
   
 # }
 
-Promethus stack
+#Promethus stack
 resource "helm_release" "prometheus_stack" {
   depends_on = [ null_resource.kube_config ,helm_release.aws_loadbalancer_controller_ingress,helm_release.external_secrets,null_resource.external_cluster_secret_store]
   name       = "prometheus"
