@@ -91,6 +91,7 @@ resource "helm_release" "prometheus_stack" {
   force_update=true # Terraform to upgrade/reinstall the release even if it exists
   recreate_pods    = true
   cleanup_on_fail  = true  # 🔥 Key option to prevent broken installs
+  timeout    = 600 #making uninstall time wait
 
 }
 
