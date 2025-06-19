@@ -143,4 +143,4 @@ resource "null_resource" "external_cluster_secret_store" {
 #         ]
 # # set the http redirect to https
  
-}
+# }
