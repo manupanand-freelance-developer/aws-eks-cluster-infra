@@ -28,7 +28,7 @@ resource "helm_release" "external_secrets" {
     value = "true"
   }]
   wait       = true
-  
+  force_update=true # Terraform to upgrade/reinstall the release even if it exists
 
  
 }
@@ -86,6 +86,8 @@ resource "helm_release" "prometheus_stack" {
             ]
   # add tls certificate also->annotation
   # external dns for creating dns on run -> for aws route53
+  force_update=true # Terraform to upgrade/reinstall the release even if it exists
+
 }
 
 # loadbalancer - by default -classic loadbalancer installing
@@ -115,7 +117,8 @@ resource "helm_release" "external_dns" {
   namespace  = "kube-system" #admin pods or on seperate ns
 
   wait       = true
-  
+  force_update=true # Terraform to upgrade/reinstall the release even if it exists
+
 # by default it dont have permission- add permission iam role
  
 }
@@ -142,5 +145,6 @@ resource "helm_release" "aws_loadbalancer_controller_ingress" {
         }    
         ]
 # set the http redirect to https
- 
+  force_update=true # Terraform to upgrade/reinstall the release even if it exists
+
 }
