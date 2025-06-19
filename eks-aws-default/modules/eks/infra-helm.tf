@@ -29,6 +29,8 @@ resource "helm_release" "external_secrets" {
   }]
   wait       = true
   force_update=true # Terraform to upgrade/reinstall the release even if it exists
+  recreate_pods    = true
+  cleanup_on_fail  = true  # 🔥 Key option to prevent broken installs
 
  
 }
@@ -87,6 +89,8 @@ resource "helm_release" "prometheus_stack" {
   # add tls certificate also->annotation
   # external dns for creating dns on run -> for aws route53
   force_update=true # Terraform to upgrade/reinstall the release even if it exists
+  recreate_pods    = true
+  cleanup_on_fail  = true  # 🔥 Key option to prevent broken installs
 
 }
 
@@ -118,6 +122,8 @@ resource "helm_release" "external_dns" {
 
   wait       = true
   force_update=true # Terraform to upgrade/reinstall the release even if it exists
+  recreate_pods    = true
+  cleanup_on_fail  = true  # 🔥 Key option to prevent broken installs
 
 # by default it dont have permission- add permission iam role
  
@@ -146,5 +152,7 @@ resource "helm_release" "aws_loadbalancer_controller_ingress" {
         ]
 # set the http redirect to https
   force_update=true # Terraform to upgrade/reinstall the release even if it exists
+  recreate_pods    = true
+  cleanup_on_fail  = true  # 🔥 Key option to prevent broken installs
 
 }
