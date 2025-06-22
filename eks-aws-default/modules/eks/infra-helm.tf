@@ -159,7 +159,7 @@ resource "helm_release" "aws_loadbalancer_controller_ingress" {
 
 }
 
-# nginx ingress
+# nginx ingress - for multi ingress tags -"kubernetes.io/cluster/dev-eks-cluster"="shared"
 # loadbalancer - by default -classic loadbalancer installing
 resource "helm_release" "nginx_ingress" {
   depends_on = [ null_resource.kube_config, helm_release.aws_loadbalancer_controller_ingress]
