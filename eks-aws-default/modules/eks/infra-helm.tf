@@ -161,27 +161,27 @@ resource "helm_release" "aws_loadbalancer_controller_ingress" {
 
 # nginx ingress - for multi ingress tags -"kubernetes.io/cluster/dev-eks-cluster"="shared"
 # loadbalancer - by default -classic loadbalancer installing
-resource "helm_release" "nginx_ingress" {
-  depends_on = [ null_resource.kube_config, helm_release.aws_loadbalancer_controller_ingress]
-  name       = "ingress-nginx"
-  repository = "https://kubernetes.github.io/ingress-nginx"
-  chart      = "ingress-nginx" #chartname
-  namespace  = "kube-system" #admin pods or on seperate ns
+# resource "helm_release" "nginx_ingress" {
+#   depends_on = [ null_resource.kube_config, helm_release.aws_loadbalancer_controller_ingress]
+#   name       = "ingress-nginx"
+#   repository = "https://kubernetes.github.io/ingress-nginx"
+#   chart      = "ingress-nginx" #chartname
+#   namespace  = "kube-system" #admin pods or on seperate ns
 
-  wait       = true
+#   wait       = true
   
-  values     = [ 
-         file("${path.module}/helm-configs/nginx-ingress.yaml") # will add this to yaml file of helm
-  ] 
-  force_update=true # Terraform to upgrade/reinstall the release even if it exists
-  recreate_pods    = true
-  cleanup_on_fail  = true
+#   values     = [ 
+#          file("${path.module}/helm-configs/nginx-ingress.yaml") # will add this to yaml file of helm
+#   ] 
+#   force_update=true # Terraform to upgrade/reinstall the release even if it exists
+#   recreate_pods    = true
+#   cleanup_on_fail  = true
 
  
-}
+# }
 # haproxy ingress loadbalancer - by default -classic loadbalancer installing
 resource "helm_release" "haproxy_ingress" {
-  depends_on = [ null_resource.kube_config, helm_release.aws_loadbalancer_controller_ingress, helm_release.nginx_ingress]
+  depends_on = [ null_resource.kube_config ,aws_eks_cluster.main,helm_release.external_secrets,null_resource.external_cluster_secret_store]
   name       = "haproxy-ingress"
   repository = "https://haproxytech.github.io/helm-charts"
   chart      = "kubernetes-ingress" #chartname
