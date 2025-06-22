@@ -7,7 +7,7 @@ resource "aws_subnet" "public_subnets" {
 
   tags={
     Name="${var.env}-pbl-sbnt-${var.availability_zones[count.index]}"
-    "kubernetes.io/cluster/dev-eks-cluster"="owned" # tag for eks to identify and create load balncer
+    "kubernetes.io/cluster/dev-eks-cluster"="shared"# tag for eks to identify and create load balncer
     "kubernetes.io/role/elb"=1 # for public load balancer
   } 
 }
@@ -20,7 +20,7 @@ resource "aws_subnet" "kube_subnets" {
 
   tags={
     Name="${var.env}-kbe-sbnt-${var.availability_zones[count.index]}"
-    "kubernetes.io/cluster/dev-eks-cluster"="owned"
+    "kubernetes.io/cluster/dev-eks-cluster"="shared"
     "kubernetes.io/role/internal-elb"= 1
   } 
 }
@@ -33,7 +33,7 @@ resource "aws_subnet" "db_subnets" {
 
   tags={
     Name="${var.env}-db-sbnt-${var.availability_zones[count.index]}"
-    "kubernetes.io/cluster/dev-eks-cluster"="owned"
-    #"kubernets.io/role/internal-elb"= 1 # for private -tag to create private load balancer 
+    "kubernetes.io/cluster/dev-eks-cluster"="shared" #shared for multi ingress only one -owned
+    "kubernets.io/role/internal-elb"= 1 # for private -tag to create private load balancer 
   } 
 }
