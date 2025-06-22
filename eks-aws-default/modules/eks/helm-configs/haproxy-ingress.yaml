@@ -1,6 +1,9 @@
 controller: 
   name: haproxy-controller
   ingressClass: haproxy
+  config: 
+  #  ssl-redirect: "true"
+   ssl-redirect-port: "443"
   service: 
     type: LoadBalancer 
     ports: 
