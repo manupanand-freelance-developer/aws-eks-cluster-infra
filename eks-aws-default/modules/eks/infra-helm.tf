@@ -1,6 +1,6 @@
 # configure cluster using terraform
 resource "null_resource" "kube_config"{
-    depends_on = [ aws_eks_node_group.main ]
+    depends_on = [ aws_eks_node_group.main ,aws_eks_addon.eks_addons]
     # better to provide appliaction namespace
     provisioner "local-exec" {
       command =<<EOF
