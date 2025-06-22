@@ -25,5 +25,3 @@ defaultBackend:
 rbac: 
  create: true
 
-extraArgs: 
-  ssl-redirect-code: 301
