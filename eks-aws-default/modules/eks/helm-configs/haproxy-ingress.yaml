@@ -3,6 +3,9 @@ controller:
   ingressClass: haproxy
   service: 
     type: LoadBalancer 
+    ports: 
+      http: 80
+      https: 443
     annotations: 
       service.beta.kubernetes.io/aws-load-balancer-type: "nlb" #"nlb"  # or "external"-external is classic
       service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
@@ -16,4 +19,6 @@ defaultBackend:
 
 rbac: 
  create: true
-    
+
+extraArgs: 
+  ssl-redirect-code: 301
