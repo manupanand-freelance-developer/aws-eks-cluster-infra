@@ -65,52 +65,55 @@ resource "null_resource" "external_cluster_secret_store" {
 # }
 
 #Promethus stack
-resource "helm_release" "prometheus_stack" {
-  depends_on = [ null_resource.kube_config ,helm_release.aws_loadbalancer_controller_ingress,helm_release.external_secrets,null_resource.external_cluster_secret_store]
-  name       = "prometheus"
-  repository = "https://prometheus-community.github.io/helm-charts"
-  chart      = "kube-prometheus-stack" #chartname
-  namespace  = "kube-system" #admin pods or on seperate ns
-
-  wait       = true
-  # add values files values.yaml file for reference
-  values=[
-    file("${path.module}/helm-configs/prometheus-stack.yaml")
-  ]
-  #seting host - list
-  set_list =[{
-              name = "grafana.ingress.hosts"
-              value = ["grafana-${var.env}.manupanand.online"]
-            }, {
-              name = "prometheus.ingress.hosts"
-              value = ["prometheus-${var.env}.manupanand.online"]
-            } 
-            ]
-  # add tls certificate also->annotation
-  # external dns for creating dns on run -> for aws route53
-  force_update=true # Terraform to upgrade/reinstall the release even if it exists
-  recreate_pods    = true
-  cleanup_on_fail  = true  # 🔥 Key option to prevent broken installs
-  timeout    = 600 #making uninstall time wait
-
-}
-
-# loadbalancer - by default -classic loadbalancer installing
-# resource "helm_release" "nginx_ingress" {
-#   depends_on = [ null_resource.kube-config ]
-#   name       = "ingress-nginx"
-#   repository = "https://kubernetes.github.io/ingress-nginx"
-#   chart      = "ingress-nginx" #chartname
+# resource "helm_release" "prometheus_stack" {
+#   depends_on = [ null_resource.kube_config ,helm_release.aws_loadbalancer_controller_ingress,helm_release.external_secrets,null_resource.external_cluster_secret_store]
+#   name       = "prometheus"
+#   repository = "https://prometheus-community.github.io/helm-charts"
+#   chart      = "kube-prometheus-stack" #chartname
 #   namespace  = "kube-system" #admin pods or on seperate ns
 
 #   wait       = true
+#   # add values files values.yaml file for reference
+#   values=[
+#     file("${path.module}/helm-configs/prometheus-stack.yaml")
+#   ]
+#   #seting host - list
+#   set_list =[{
+#               name = "grafana.ingress.hosts"
+#               value = ["grafana-${var.env}.manupanand.online"]
+#             }, {
+#               name = "prometheus.ingress.hosts"
+#               value = ["prometheus-${var.env}.manupanand.online"]
+#             } 
+#             ]
+#   # add tls certificate also->annotation
+#   # external dns for creating dns on run -> for aws route53
+#   force_update=true # Terraform to upgrade/reinstall the release even if it exists
+#   recreate_pods    = true
+#   cleanup_on_fail  = true  # 🔥 Key option to prevent broken installs
+#   timeout    = 600 #making uninstall time wait
+
+# }
+
+# loadbalancer - by default -classic loadbalancer installing
+resource "helm_release" "nginx_ingress" {
+  depends_on = [ null_resource.kube-config ]
+  name       = "ingress-nginx"
+  repository = "https://kubernetes.github.io/ingress-nginx"
+  chart      = "ingress-nginx" #chartname
+  namespace  = "kube-system" #admin pods or on seperate ns
+
+  wait       = true
   
-#   values     = [ 
-#          file("${path.module}/helm-configs/nginx-ingress.yaml") # will add this to yaml file of helm
-#   ] 
+  values     = [ 
+         file("${path.module}/helm-configs/nginx-ingress.yaml") # will add this to yaml file of helm
+  ] 
+  force_update=true # Terraform to upgrade/reinstall the release even if it exists
+  recreate_pods    = true
+  cleanup_on_fail  = true
 
  
-# }
+}
 #kubectl get svc -n kube-system > nginxingress.yaml
 # external dns for auto -create dns with route53
 #helm repo add external-dns https://kubernetes-sigs.github.io/external-dns/
@@ -119,6 +122,22 @@ resource "helm_release" "external_dns" {
   name       = "route53-dns"# just a chart name> pod name
   repository = "https://kubernetes-sigs.github.io/external-dns"
   chart      = "external-dns" #chartname
+  namespace  = "kube-system" #admin pods or on seperate ns
+
+  wait       = true
+  force_update=true # Terraform to upgrade/reinstall the release even if it exists
+  recreate_pods    = true
+  cleanup_on_fail  = true  # 🔥 Key option to prevent broken installs
+
+# by default it dont have permission- add permission iam role
+ 
+}
+#intsall cert-manager
+resource "helm_release" "cert_manager" {
+  depends_on = [ null_resource.kube_config ,helm_release.external_secrets,null_resource.external_cluster_secret_store,helm_release.external_dns]
+  name       = "cert-manager"# release-name
+  repository = "https://charts.jetstack.io"
+  chart      = "cert-manager" #chartname
   namespace  = "kube-system" #admin pods or on seperate ns
 
   wait       = true
