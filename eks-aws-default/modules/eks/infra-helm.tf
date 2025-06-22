@@ -97,7 +97,7 @@ resource "null_resource" "external_cluster_secret_store" {
 
 # loadbalancer - by default -classic loadbalancer installing
 resource "helm_release" "nginx_ingress" {
-  depends_on = [ null_resource.kube-config ]
+  depends_on = [ null_resource.kube_config ]
   name       = "ingress-nginx"
   repository = "https://kubernetes.github.io/ingress-nginx"
   chart      = "ingress-nginx" #chartname
