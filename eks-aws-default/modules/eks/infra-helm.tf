@@ -133,21 +133,21 @@ resource "helm_release" "external_dns" {
  
 }
 #intsall cert-manager
-resource "helm_release" "cert_manager" {
-  depends_on = [ null_resource.kube_config ,helm_release.external_secrets,null_resource.external_cluster_secret_store,helm_release.external_dns]
-  name       = "cert-manager"# release-name
-  repository = "https://charts.jetstack.io"
-  chart      = "cert-manager" #chartname
-  namespace  = "kube-system" #admin pods or on seperate ns
+# resource "helm_release" "cert_manager" {
+#   depends_on = [ null_resource.kube_config ,helm_release.external_secrets,null_resource.external_cluster_secret_store,helm_release.external_dns]
+#   name       = "cert-manager"# release-name
+#   repository = "https://charts.jetstack.io"
+#   chart      = "cert-manager" #chartname
+#   namespace  = "kube-system" #admin pods or on seperate ns
 
-  wait       = true
-  force_update=true # Terraform to upgrade/reinstall the release even if it exists
-  recreate_pods    = true
-  cleanup_on_fail  = true  # 🔥 Key option to prevent broken installs
+#   wait       = true
+#   force_update=true # Terraform to upgrade/reinstall the release even if it exists
+#   recreate_pods    = true
+#   cleanup_on_fail  = true  # 🔥 Key option to prevent broken installs
 
-# by default it dont have permission- add permission iam role
+# # by default it dont have permission- add permission iam role
  
-}
+# }
 
 # aws load balancer controller ingress
 # loadbalancer - by default -classic loadbalancer installing
