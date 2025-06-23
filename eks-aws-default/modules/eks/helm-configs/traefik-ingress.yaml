@@ -3,7 +3,7 @@ ingressClass:
 service: 
   type: LoadBalancer
   annotations: 
-      service.beta.kubernetes.io/aws-load-balancer-type: "external" #"nlb"  # or "external"-external is classic
+      service.beta.kubernetes.io/aws-load-balancer-type: "nlb" #"nlb"  # or "external"-external is classic
       service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
       service.beta.kubernetes.io/aws-load-balancer-internal: "false"
       service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "ip"
