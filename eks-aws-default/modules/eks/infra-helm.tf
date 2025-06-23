@@ -162,7 +162,7 @@ resource "helm_release" "aws_loadbalancer_controller_ingress" {
 # nginx ingress - for multi ingress tags -"kubernetes.io/cluster/dev-eks-cluster"="shared"
 # loadbalancer - by default -classic loadbalancer installing
 resource "helm_release" "nginx_ingress" {
-  depends_on = [ null_resource.kube_config ,aws_eks_cluster.main,helm_release.external_secrets,null_resource.external_cluster_secret_store]
+  depends_on = [ null_resource.kube_config ,aws_eks_cluster.main,helm_release.external_secrets,null_resource.external_cluster_secret_store,helm_release.aws_loadbalancer_controller_ingress]
   name       = "ingress-nginx"
   repository = "https://kubernetes.github.io/ingress-nginx"
   chart      = "ingress-nginx" #chartname
@@ -181,7 +181,7 @@ resource "helm_release" "nginx_ingress" {
 }
 # haproxy ingress loadbalancer - by default -classic loadbalancer installing
 resource "helm_release" "haproxy_ingress" {
-  depends_on = [ null_resource.kube_config ,aws_eks_cluster.main,helm_release.external_secrets,null_resource.external_cluster_secret_store]
+  depends_on = [ null_resource.kube_config ,aws_eks_cluster.main,helm_release.external_secrets,null_resource.external_cluster_secret_store,helm_release.aws_loadbalancer_controller_ingress]
   name       = "haproxy-ingress"
   repository = "https://haproxytech.github.io/helm-charts"
   chart      = "kubernetes-ingress" #chartname
@@ -201,7 +201,7 @@ resource "helm_release" "haproxy_ingress" {
 
 # traefik ingress loadbalancer - by default -classic loadbalancer installing
 resource "helm_release" "traefik_ingress" {
-  depends_on = [ null_resource.kube_config ,aws_eks_cluster.main,helm_release.external_secrets,null_resource.external_cluster_secret_store]
+  depends_on = [ null_resource.kube_config ,aws_eks_cluster.main,helm_release.external_secrets,null_resource.external_cluster_secret_store,helm_release.aws_loadbalancer_controller_ingress]
   name       = "traefik-ingress"
   repository = "https://traefik.github.io/charts"
   chart      = "traefik" #chartname
@@ -220,7 +220,7 @@ resource "helm_release" "traefik_ingress" {
 }
 #gloo-apigateway and ingress| ingress loadbalancer - by default -classic loadbalancer installing
 resource "helm_release" "gloo_ingress" {
-  depends_on = [ null_resource.kube_config ,aws_eks_cluster.main,helm_release.external_secrets,null_resource.external_cluster_secret_store]
+  depends_on = [ null_resource.kube_config ,aws_eks_cluster.main,helm_release.external_secrets,null_resource.external_cluster_secret_store,helm_release.aws_loadbalancer_controller_ingress]
   name       = "gloo-ingress-api"
   repository = "https://storage.googleapis.com/solo-public-helm"
   chart      = "gloo" #chartname
