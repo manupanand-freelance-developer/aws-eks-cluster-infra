@@ -180,60 +180,60 @@ resource "helm_release" "nginx_ingress" {
  
 }
 # haproxy ingress loadbalancer - by default -classic loadbalancer installing
-resource "helm_release" "haproxy_ingress" {
-  depends_on = [ null_resource.kube_config ,aws_eks_cluster.main,helm_release.external_secrets,null_resource.external_cluster_secret_store,helm_release.aws_loadbalancer_controller_ingress]
-  name       = "haproxy-ingress"
-  repository = "https://haproxytech.github.io/helm-charts"
-  chart      = "kubernetes-ingress" #chartname
-  namespace  = "kube-system" #admin pods or on seperate ns
+# resource "helm_release" "haproxy_ingress" {
+#   depends_on = [ null_resource.kube_config ,aws_eks_cluster.main,helm_release.external_secrets,null_resource.external_cluster_secret_store,helm_release.aws_loadbalancer_controller_ingress]
+#   name       = "haproxy-ingress"
+#   repository = "https://haproxytech.github.io/helm-charts"
+#   chart      = "kubernetes-ingress" #chartname
+#   namespace  = "kube-system" #admin pods or on seperate ns
 
-  wait       = true
+#   wait       = true
   
-  values     = [ 
-         file("${path.module}/helm-configs/haproxy-ingress.yaml") # will add this to yaml file of helm
-  ] 
-  force_update=true # Terraform to upgrade/reinstall the release even if it exists
-  recreate_pods    = true
-  cleanup_on_fail  = true
+#   values     = [ 
+#          file("${path.module}/helm-configs/haproxy-ingress.yaml") # will add this to yaml file of helm
+#   ] 
+#   force_update=true # Terraform to upgrade/reinstall the release even if it exists
+#   recreate_pods    = true
+#   cleanup_on_fail  = true
 
  
-}
+# }
 
 # traefik ingress loadbalancer - by default -classic loadbalancer installing
-resource "helm_release" "traefik_ingress" {
-  depends_on = [ null_resource.kube_config ,aws_eks_cluster.main,helm_release.external_secrets,null_resource.external_cluster_secret_store,helm_release.aws_loadbalancer_controller_ingress]
-  name       = "traefik-ingress"
-  repository = "https://traefik.github.io/charts"
-  chart      = "traefik" #chartname
-  namespace  = "kube-system" #admin pods or on seperate ns
+# resource "helm_release" "traefik_ingress" {
+#   depends_on = [ null_resource.kube_config ,aws_eks_cluster.main,helm_release.external_secrets,null_resource.external_cluster_secret_store,helm_release.aws_loadbalancer_controller_ingress]
+#   name       = "traefik-ingress"
+#   repository = "https://traefik.github.io/charts"
+#   chart      = "traefik" #chartname
+#   namespace  = "kube-system" #admin pods or on seperate ns
 
-  wait       = true
+#   wait       = true
   
-  values     = [ 
-         file("${path.module}/helm-configs/traefik-ingress.yaml") # will add this to yaml file of helm
-  ] 
-  force_update=true # Terraform to upgrade/reinstall the release even if it exists
-  recreate_pods    = true
-  cleanup_on_fail  = true
+#   values     = [ 
+#          file("${path.module}/helm-configs/traefik-ingress.yaml") # will add this to yaml file of helm
+#   ] 
+#   force_update=true # Terraform to upgrade/reinstall the release even if it exists
+#   recreate_pods    = true
+#   cleanup_on_fail  = true
 
  
-}
+# }
 #gloo-apigateway and ingress| ingress loadbalancer - by default -classic loadbalancer installing
-resource "helm_release" "gloo_ingress" {
-  depends_on = [ null_resource.kube_config ,aws_eks_cluster.main,helm_release.external_secrets,null_resource.external_cluster_secret_store,helm_release.aws_loadbalancer_controller_ingress]
-  name       = "gloo-ingress-api"
-  repository = "https://storage.googleapis.com/solo-public-helm"
-  chart      = "gloo" #chartname
-  namespace  = "kube-system" #admin pods or on seperate ns
+# resource "helm_release" "gloo_ingress" {
+#   depends_on = [ null_resource.kube_config ,aws_eks_cluster.main,helm_release.external_secrets,null_resource.external_cluster_secret_store,helm_release.aws_loadbalancer_controller_ingress]
+#   name       = "gloo-ingress-api"
+#   repository = "https://storage.googleapis.com/solo-public-helm"
+#   chart      = "gloo" #chartname
+#   namespace  = "kube-system" #admin pods or on seperate ns
 
-  wait       = true
+#   wait       = true
   
-  values     = [ 
-         file("${path.module}/helm-configs/gloo-ingress.yaml") # will add this to yaml file of helm
-  ] 
-  force_update=true # Terraform to upgrade/reinstall the release even if it exists
-  recreate_pods    = true
-  cleanup_on_fail  = true
+#   values     = [ 
+#          file("${path.module}/helm-configs/gloo-ingress.yaml") # will add this to yaml file of helm
+#   ] 
+#   force_update=true # Terraform to upgrade/reinstall the release even if it exists
+#   recreate_pods    = true
+#   cleanup_on_fail  = true
 
  
-}
+# }
