@@ -1,21 +1,27 @@
-gateway:
-  enabled: false
 ingress:
   enabled: true
-gatewayProxies: 
-  gatewayProxy: 
-     service: 
-       type: LoadBalancer 
-       httpPort: 80
-       httpsPort: 443 
-       extraAnnotations: 
-          service.beta.kubernetes.io/aws-load-balancer-type: "external" #"nlb"  # or "external"-external is classic
-          service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
-          service.beta.kubernetes.io/aws-load-balancer-internal: "false"
-          service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "ip"
-          service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:ap-south-2:058264470882:certificate/47a1d684-7a5d-49bd-b80f-8089c205d94c
-          service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "https"
-          service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "http"
-          external-dns.alpha.kubernetes.io/hostname: gloo.manupanand.online
-          service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: "3600"
-          service.beta.kubernetes.io/aws-load-balancer-listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+
+gateway:
+  enabled: false
+
+gatewayProxies:
+  gatewayProxy:
+    enabled: false
+
+settings:
+  create: true
+
+global:
+  glooRbac:
+    create: true
+
+ingressProxy:
+  service:
+    type: LoadBalancer
+    extraAnnotations:
+      service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+      service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+      service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:ap-south-2:058264470882:certificate/47a1d684-7a5d-49bd-b80f-8089c205d94c
+      service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "https"
+      service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "http"
+      external-dns.alpha.kubernetes.io/hostname: gloo.manupanand.online
