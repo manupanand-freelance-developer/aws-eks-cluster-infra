@@ -219,7 +219,7 @@ resource "helm_release" "traefik_ingress" {
  
 }
 #gloo-apigateway and ingress| ingress loadbalancer - by default -classic loadbalancer installing
-resource "helm_release" "traefik_ingress" {
+resource "helm_release" "gloo_ingress" {
   depends_on = [ null_resource.kube_config ,aws_eks_cluster.main,helm_release.external_secrets,null_resource.external_cluster_secret_store]
   name       = "gloo-ingress-api"
   repository = "https://storage.googleapis.com/solo-public-helm"
