@@ -6,7 +6,7 @@ controller:  # configration for ingres to open http and https ports in LB
       https: https  
     annotations:
       service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
-      external-dns.alpha.kubernetes.io/hostname: frontend.manupanand.online
+      external-dns.alpha.kubernetes.io/hostname: nginx.manupanand.online
       service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:ap-south-2:058264470882:certificate/47a1d684-7a5d-49bd-b80f-8089c205d94c
       service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "http"
       service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "https"
