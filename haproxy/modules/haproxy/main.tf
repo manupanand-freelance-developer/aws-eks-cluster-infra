@@ -21,7 +21,7 @@ resource "aws_instance" "main" {
   }
   # user data script
 
-  user_data = base64encode(templatefile("${path.module}/script.sh",{
+  user_data_base64 = base64encode(templatefile("${path.module}/script.sh",{
 
         AWS_USER     = var.aws_user
         AWS_PASSWORD = var.aws_password
