@@ -9,3 +9,7 @@ data "aws_instances" "eks_nodes" {
     values = ["running"]
   }
 }
+
+output "test" {
+  value = data.aws_instances.eks_nodes.instances
+}
