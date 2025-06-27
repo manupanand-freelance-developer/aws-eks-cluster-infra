@@ -10,11 +10,3 @@ data "aws_instances" "eks_nodes" {
   }
 }
 
-output "test" {
-  value = [
-                        for ip in data.aws_instances.eks_nodes.public_ips :
-                        {
-                          public_ip = ip
-                        }
-                      ]
-}
