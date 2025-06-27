@@ -4,7 +4,8 @@ vpc_name     ="default_vpc_south2"
 subnet_name_2a  ="default-ap-south-2a"
 subnet_name_2b  ="default-ap-south-2b" 
 subnet_name_2c  ="default-ap-south-2c"     
-  
+zone_id         ="Z02556032JV56RSCGA16T"
+
 #eks
 
 eks={

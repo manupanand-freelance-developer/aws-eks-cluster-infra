@@ -1,0 +1,42 @@
+
+- name: Setting prompt name
+  ansible.builtin.lineinfile:
+     path: "/home/ec2-user/.bashrc"
+     line: 'export PS1="\[\e[1;31m\]\u\[\e[0m\]@\[\e[1;34m\]{{ role_name }}\[\e[0m\] \w \$ "'
+     create: true
+     mode: '0644'
+
+- name: Installing firewalld
+  ansible.builtin.dnf: 
+    name: firewalld 
+    state: latest
+  
+
+- name: Enable  firewalld
+  ansible.builtin.systemd_service: 
+   name:  firewalld
+   state: restarted
+   enabled: true
+
+
+
+- name: Enabling ports with firewalld
+  ansible.builtin.shell: | 
+     firewall-cmd --zone=public --add-port=22/tcp --permanent  && firewall-cmd --reload
+     firewall-cmd --zone=public --add-port=80/tcp --permanent  && firewall-cmd --reload
+     firewall-cmd --zone=public --add-port=443/tcp --permanent  && firewall-cmd --reload
+  args:
+    executable: /bin/bash
+
+- name: Install HAProxy 
+  ansible.builtin.dnf: 
+    name: haproxy 
+    state: latest 
+
+- name: Enable Haproxy
+  ansible.builtin.systemd_service: 
+    name: haproxy 
+    state: restarted 
+    enabled: true
+
+

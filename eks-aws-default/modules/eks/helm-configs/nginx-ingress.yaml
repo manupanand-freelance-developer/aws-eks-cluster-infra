@@ -12,7 +12,7 @@ controller:  # configration for ingres to open http and https ports in LB
       service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "https"
       service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: "3600"
       service.beta.kubernetes.io/aws-load-balancer-listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
-      service.beta.kubernetes.io/aws-load-balancer-subnets: "subnet-004f25a76605ea111,subnet-09e71964defd3389e,subnet-0df578dfdcbaa2f37" # specify subnet explicitly idf neded
+      #service.beta.kubernetes.io/aws-load-balancer-subnets: "subnet-004f25a76605ea111,subnet-09e71964defd3389e,subnet-0df578dfdcbaa2f37" # specify subnet explicitly idf neded
 
 config: 
   ssl-redirect: "true" # enable ssl redirect globbaly at controller level

@@ -58,6 +58,7 @@ resource "aws_eks_node_group" "main" {
   ]
 }
 
+
 resource "aws_eks_addon" "eks_addons" {
     depends_on                  = [ aws_eks_cluster.main,aws_eks_node_group.main ]
     for_each                    = var.add_ons 

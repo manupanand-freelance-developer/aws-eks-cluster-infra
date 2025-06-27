@@ -12,3 +12,10 @@ module "eks" {
   vault_token       = var.vault_token 
 }
 
+module "dns" {
+  depends_on        = [ module.eks ]
+  source            = "./modules/dns"
+  node_name         = data.aws_instances.eks_nodes.instances
+  zone_id           = var.zone_id 
+  env               = var.env 
+}

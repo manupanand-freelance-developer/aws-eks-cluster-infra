@@ -19,3 +19,6 @@ variable "eks" {
 variable "vault_token" {
   
 }
+variable "zone_id" {
+  
+}
