@@ -11,5 +11,10 @@ data "aws_instances" "eks_nodes" {
 }
 
 output "test" {
-  value = data.aws_instances.eks_nodes.instances
+  value = [
+                        for instance in data.aws_instances.eks_nodes.instances :
+                        {
+                          public_ip = instance.public_ip
+                        }
+                      ]
 }
