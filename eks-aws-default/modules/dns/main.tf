@@ -1,6 +1,6 @@
 resource "aws_route53_record" "eks_node_dns" {
   for_each = {
-    for idx, instance in data.aws_instances.eks_nodes.instances :
+    for idx, instance in var.node_name :
     "node-${idx}" => instance
   }
 #idx index of instance 0,1 etc in list

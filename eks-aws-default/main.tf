@@ -15,7 +15,12 @@ module "eks" {
 module "dns" {
   depends_on        = [ module.eks ]
   source            = "./modules/dns"
-  node_name         = data.aws_instances.eks_nodes.instances
   zone_id           = var.zone_id 
   env               = var.env 
+  node_name         = [
+                        for instance in data.aws_instances.eks_nodes.instances :
+                        {
+                          public_ip = instance.public_ip
+                        }
+                      ]
 }
