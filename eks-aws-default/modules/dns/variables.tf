@@ -1,4 +1,4 @@
-variable "node_name" {
+variable "node_ip" {
    type = list(object({
     public_ip = string
   }))

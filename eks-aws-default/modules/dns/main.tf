@@ -1,7 +1,7 @@
 resource "aws_route53_record" "eks_node_dns" {
   for_each = {
-    for idx, instance in var.node_name :
-    "node-${idx}" => instance
+    for idx, ip in var.node_ip:
+    "node-${idx}" => ip
   }
 #idx index of instance 0,1 etc in list
 # var.node_name = [
@@ -12,5 +12,5 @@ resource "aws_route53_record" "eks_node_dns" {
   name    = "${each.key}.${var.env}"
   type    = "A"
   ttl     = 25
-  records = [each.value.public_ip]
+  records = [each.value]
 }
