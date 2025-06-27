@@ -134,51 +134,51 @@ resource "helm_release" "external_dns" {
 # aws load balancer controller ingress
 # loadbalancer - by default -classic loadbalancer installing
 #kubernets-sigs.github.io/aws-load-balncer-controller/latest/deploy/installation
-resource "helm_release" "aws_loadbalancer_controller_ingress" {
-  depends_on = [ null_resource.kube_config,aws_eks_cluster.main,helm_release.external_secrets,null_resource.external_cluster_secret_store]
-  name       = "aws-ingress"
-  repository = "https://aws.github.io/eks-charts"
-  chart      = "aws-load-balancer-controller" #chartname
-  namespace  = "kube-system" #admin pods or on seperate ns
+# resource "helm_release" "aws_loadbalancer_controller_ingress" {
+#   depends_on = [ null_resource.kube_config,aws_eks_cluster.main,helm_release.external_secrets,null_resource.external_cluster_secret_store]
+#   name       = "aws-ingress"
+#   repository = "https://aws.github.io/eks-charts"
+#   chart      = "aws-load-balancer-controller" #chartname
+#   namespace  = "kube-system" #admin pods or on seperate ns
 
-  wait       = true
+#   wait       = true
   
-  set =[{
-            name     = "clusterName" 
-            value    = aws_eks_cluster.main.name
-          },    # need to give appropriate iam permission to pod for its SA
-          {
-          name = "vpcId" # in values.yaml vpcId to fetch
-          value= data.aws_vpc.private_vpc.id
-        }    
-        ]
-# set the http redirect to https
-  force_update=true # Terraform to upgrade/reinstall the release even if it exists
-  recreate_pods    = true
-  cleanup_on_fail  = true  # 🔥 Key option to prevent broken installs
+#   set =[{
+#             name     = "clusterName" 
+#             value    = aws_eks_cluster.main.name
+#           },    # need to give appropriate iam permission to pod for its SA
+#           {
+#           name = "vpcId" # in values.yaml vpcId to fetch
+#           value= data.aws_vpc.private_vpc.id
+#         }    
+#         ]
+# # set the http redirect to https
+#   force_update=true # Terraform to upgrade/reinstall the release even if it exists
+#   recreate_pods    = true
+#   cleanup_on_fail  = true  # 🔥 Key option to prevent broken installs
 
-}
+# }
 
 # nginx ingress - for multi ingress tags -"kubernetes.io/cluster/dev-eks-cluster"="shared"
 # loadbalancer - by default -classic loadbalancer installing
-resource "helm_release" "nginx_ingress" {
-  depends_on = [ null_resource.kube_config ,aws_eks_cluster.main,helm_release.external_secrets,null_resource.external_cluster_secret_store,helm_release.aws_loadbalancer_controller_ingress]
-  name       = "ingress-nginx"
-  repository = "https://kubernetes.github.io/ingress-nginx"
-  chart      = "ingress-nginx" #chartname
-  namespace  = "kube-system" #admin pods or on seperate ns
+# resource "helm_release" "nginx_ingress" {
+#   depends_on = [ null_resource.kube_config ,aws_eks_cluster.main,helm_release.external_secrets,null_resource.external_cluster_secret_store,helm_release.aws_loadbalancer_controller_ingress]
+#   name       = "ingress-nginx"
+#   repository = "https://kubernetes.github.io/ingress-nginx"
+#   chart      = "ingress-nginx" #chartname
+#   namespace  = "kube-system" #admin pods or on seperate ns
 
-  wait       = true
+#   wait       = true
   
-  values     = [ 
-         file("${path.module}/helm-configs/nginx-ingress.yaml") # will add this to yaml file of helm
-  ] 
-  force_update=true # Terraform to upgrade/reinstall the release even if it exists
-  recreate_pods    = true
-  cleanup_on_fail  = true
+#   values     = [ 
+#          file("${path.module}/helm-configs/nginx-ingress.yaml") # will add this to yaml file of helm
+#   ] 
+#   force_update=true # Terraform to upgrade/reinstall the release even if it exists
+#   recreate_pods    = true
+#   cleanup_on_fail  = true
 
  
-}
+# }
 # haproxy ingress loadbalancer - by default -classic loadbalancer installing
 # resource "helm_release" "haproxy_ingress" {
 #   depends_on = [ null_resource.kube_config ,aws_eks_cluster.main,helm_release.external_secrets,null_resource.external_cluster_secret_store,helm_release.aws_loadbalancer_controller_ingress]
